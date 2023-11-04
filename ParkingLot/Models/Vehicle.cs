@@ -8,16 +8,14 @@ namespace ParkingLot.Modals
 {
     class Vehicle
     {
-        public Vehicle(string num, DateTime inTime, VehicleType type)
+        public Vehicle(string num, VehicleType type)
         {
-            number = num;
-            InTime = inTime;
-            vehicleType = type;
+            Number = num;
+            Type = type;
         }
 
-        public string number { get; set; }
-        public DateTime InTime { get; set; }
-        public VehicleType vehicleType { get; set; }
-
+        public string Number { get; set; }
+        public VehicleType Type { get; set; }
+      
     }
 }

@@ -1,4 +1,5 @@
-﻿using ParkingLot.Modals;
+﻿using ParkingLot.Data;
+using ParkingLot.Modals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,42 +10,44 @@ namespace ParkingLot.Services
 {
     class VehicleService
     {
-        private ParkingService parkingService;
+        //private ParkingService parkingService;
 
-        public VehicleService(ParkingService parkingService)
-        {
-            this.parkingService = parkingService;
-        }
-        OutputService iosService = new OutputService();
-        public List<Vehicle> allVehicles { get; set; } = new List<Vehicle>();
-        public List<Vehicle> twoWheelerVehicles { get; set; } = new List<Vehicle>();
-        public List<Vehicle> threeWheelerVehicles { get; set; } = new List<Vehicle>();
-        public List<Vehicle> moreWheelerVehicles { get; set; } = new List<Vehicle>();
+        //public VehicleService(ParkingService parkingService)
+        //{
+        //    this.parkingService = parkingService;
+        //}
+        OutputService outputService = new OutputService();
+        ParkingLotData parkingLotData = new ParkingLotData();
+        ParkingService parkingService = new ParkingService();
+        //public List<Vehicle> allVehicles { get; set; } = new List<Vehicle>();
+        //public List<Vehicle> twoWheelerVehicles { get; set; } = new List<Vehicle>();
+        //public List<Vehicle> threeWheelerVehicles { get; set; } = new List<Vehicle>();
+        //public List<Vehicle> moreWheelerVehicles { get; set; } = new List<Vehicle>();
 
         public void CheckVehicleCountInListToAdd(Vehicle vehicle)
         {
-            allVehicles.Add(vehicle);
-            switch (vehicle.vehicleType)
+            parkingLotData.AllVehicles.Add(vehicle);
+            switch (vehicle.Type)
             {
                 case VehicleType.TwoWheeler:
-                    if (twoWheelerVehicles.Count <= 2)
-                        parkingService.AddVehicle(twoWheelerVehicles, vehicle, "A");
+                    if (parkingLotData.TwoWheelerVehicles.Count <= 2)
+                        parkingService.ParkVehicle(parkingLotData.TwoWheelerVehicles, vehicle, "A");
                     else
-                        iosService.NoSpaceinPark();
+                        outputService.NoSpaceinPark();
                        break;
 
                 case VehicleType.ThreeWheeler:
-                    if (threeWheelerVehicles.Count <= 2)
-                       parkingService.AddVehicle(threeWheelerVehicles, vehicle, "B");
+                    if (parkingLotData.ThreeWheelerVehicles.Count <= 2)
+                       parkingService.ParkVehicle(parkingLotData.ThreeWheelerVehicles, vehicle, "B");
                     else
-                        iosService.NoSpaceinPark();
+                        outputService.NoSpaceinPark();
                     break;
 
                 case VehicleType.Heavy:
-                    if (moreWheelerVehicles.Count <= 2)
-                       parkingService.AddVehicle(moreWheelerVehicles, vehicle, "C");
+                    if (parkingLotData.MoreWheelerVehicles.Count <= 2)
+                       parkingService.ParkVehicle(parkingLotData.MoreWheelerVehicles, vehicle, "C");
                     else
-                        iosService.NoSpaceinPark();
+                        outputService.NoSpaceinPark();
                     break;
 
                 default:
@@ -54,38 +57,39 @@ namespace ParkingLot.Services
           
         }
       
-        public void CheckVehicleExist(string number)
+       public void GetVehicleDetailsToUnpark(string number)
         {
-           var vehicle = allVehicles.FirstOrDefault(vehicle => vehicle.number == number);
+           var vehicle = parkingLotData.AllVehicles.FirstOrDefault(vehicle => vehicle.Number == number);
     
             if(vehicle == null)
             {
-                iosService.VehicleNotParked();
-            }
+                outputService.VehicleNotParked();            }
             else
             {
-                CheckVehicleTypeToRemove(vehicle);
+                CheckVehicleTypeToUnpark(vehicle);
             }
-           
-        }
+          }
 
-        public void CheckVehicleTypeToRemove(Vehicle vehicle)
+
+        //var isExist = CheckVehicleExist(num);
+
+        public void CheckVehicleTypeToUnpark(Vehicle vehicle)
         {
 
-            allVehicles.Remove(vehicle);
+            parkingLotData.AllVehicles.Remove(vehicle);
 
-            switch (vehicle.vehicleType)
+            switch (vehicle.Type)
             {
                 case VehicleType.TwoWheeler:
-                    parkingService.RemoveVehicle(twoWheelerVehicles, vehicle);
+                    parkingService.UnParkVehicle(parkingLotData.TwoWheelerVehicles, vehicle);
                     break;
 
                 case VehicleType.ThreeWheeler:
-                   parkingService.RemoveVehicle(threeWheelerVehicles, vehicle);
+                   parkingService.UnParkVehicle(parkingLotData.ThreeWheelerVehicles, vehicle);
                     break;
 
                 case VehicleType.Heavy:
-                   parkingService.RemoveVehicle(moreWheelerVehicles, vehicle);
+                   parkingService.UnParkVehicle(parkingLotData.MoreWheelerVehicles, vehicle);
                     break;
 
                 default:

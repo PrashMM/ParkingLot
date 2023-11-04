@@ -18,8 +18,9 @@ namespace ParkingLot
         {
             Console.WriteLine(Constants.welcomeMessage);
 
-            ParkingService parkingService = new ParkingService(new VehicleService(null));
-            VehicleService vehicleService = new VehicleService(parkingService);
+            ParkingService parkingService = new ParkingService();   //VehicleServices(null)
+            VehicleService vehicleService = new VehicleService();   //VehicleService vehicleService = new VehicleService(parkingService);
+            //OutputService outputService = new OutputService();
             Console.WriteLine(Constants.chooseParkingOptions);
 
             var userInput = Convert.ToInt32(Console.ReadLine());
@@ -33,30 +34,29 @@ namespace ParkingLot
                         case MainMenu.ToParkVehicle:
 
                             Console.WriteLine(Constants.vehicleWheelInfo);
-                            var wheelNum = int.Parse(Console.ReadLine());
+                            var option = int.Parse(Console.ReadLine());
                             Console.WriteLine(Constants.seperateLine);
                             Console.WriteLine(Constants.enterVehicleNumber);
                             var number = Console.ReadLine();
-                            var inTime = DateTime.Now;
 
-                            switch (GetWheelDetails(wheelNum))
+                            switch (GetWheelDetails(option))
                             {
                                 case WheelParkingDetails.ParkingInfo:
                                     Console.WriteLine(Constants.welcomeMessage);
                                     break;
 
                                 case WheelParkingDetails.TwoWheelerParking:
-                                    var newTwoWheelerVehicle = new Vehicle(number, inTime, VehicleType.TwoWheeler);
+                                    var newTwoWheelerVehicle = new Vehicle(number, VehicleType.TwoWheeler);
                                     vehicleService.CheckVehicleCountInListToAdd(newTwoWheelerVehicle);
                                     break;
 
                                 case WheelParkingDetails.ThreeWheelerParking:
-                                    var newThreeWheelerVehicle = new Vehicle(number, inTime, VehicleType.ThreeWheeler);
+                                    var newThreeWheelerVehicle = new Vehicle(number, VehicleType.ThreeWheeler);
                                     vehicleService.CheckVehicleCountInListToAdd(newThreeWheelerVehicle);
                                     break;
 
                                 case WheelParkingDetails.MoreWheelerParking:
-                                    var newMoreWheelerVehicle = new Vehicle(number, inTime, VehicleType.Heavy);
+                                    var newMoreWheelerVehicle = new Vehicle(number, VehicleType.Heavy);
                                     vehicleService.CheckVehicleCountInListToAdd(newMoreWheelerVehicle);
                                     break;
 
@@ -69,7 +69,7 @@ namespace ParkingLot
                         case MainMenu.ToRemoveVehicle:
                             Console.WriteLine(Constants.enterVehicleNumber);
                             var num = Console.ReadLine();
-                            vehicleService.CheckVehicleExist(num);
+                            vehicleService.GetVehicleDetailsToUnpark(num);
                             break;
 
                         default:

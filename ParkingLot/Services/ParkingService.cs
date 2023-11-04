@@ -11,16 +11,17 @@ namespace ParkingLot.Services
     class ParkingService
     {
 
-       private VehicleService vehicleService;
+       //private VehicleService vehicleService;
 
-        public ParkingService(VehicleService vehicleService)
-        {
-            this.vehicleService = vehicleService;
-        }
+       // public ParkingService(VehicleService vehicleService)
+       // {
+       //     this.vehicleService = vehicleService;
+       // }
 
         OutputService outputService = new OutputService();
         
-        public void AddVehicle(List<Vehicle> vehicleTypeList, Vehicle vehicle, String value)
+
+        public void ParkVehicle(List<Vehicle> vehicleTypeList, Vehicle vehicle, String value)
         {
             vehicleTypeList.Add(vehicle);
             outputService.GenerateParkingTicket(vehicle, vehicleTypeList, value);
@@ -28,10 +29,10 @@ namespace ParkingLot.Services
 
         
 
-        public void RemoveVehicle(List<Vehicle> vehicleTypeList, Vehicle vehicle)
+        public void UnParkVehicle(List<Vehicle> vehicleTypeList, Vehicle vehicle)
         {
             vehicleTypeList.Remove(vehicle);
-            outputService.VehicleRemoved(vehicle);
+            outputService.UnParkedVehicle(vehicle);
         }
 
     }

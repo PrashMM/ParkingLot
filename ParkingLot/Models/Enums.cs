@@ -26,8 +26,7 @@ namespace ParkingLot.Modals
         TwoWheelerParking,
         ThreeWheelerParking,
         MoreWheelerParking,
-        None
+        None 
     }
-
 
 }
